@@ -1,0 +1,30 @@
+src/
+│
+├── api/
+├── assets/
+├── components/
+├── config/
+├── constants/
+├── contexts/
+├── features/
+├── hooks/
+├── layouts/
+├── pages/
+├── routes/
+├── services/
+├── store/
+├── styles/
+├── types/
+├── utils/
+├── validations/
+├── i18n/
+├── permissions/
+├── websocket/
+├── analytics/
+├── error-boundary/
+├── tests/
+├── mocks/
+├── middleware/
+├── App.tsx
+├── main.tsx
+└── vite-env.d.ts
