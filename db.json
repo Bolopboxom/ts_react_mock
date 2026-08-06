@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "role": "Admin"
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "email": "bobby@example.com",
+      "role": "User"
+    },
+    {
+      "id": 3,
+      "name": "TS",
+      "email": "trunghs@fpt.com",
+      "role": "Admin"
+    }
+  ]
+}
