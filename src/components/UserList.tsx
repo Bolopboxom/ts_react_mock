@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
+import type { Role } from '../models/role'
 import type { User } from '../models/user'
+import { roleService } from '../services/roleService'
 import { userService } from '../services/userService'
 import { UserForm } from './UserForm'
 
 export function UserList() {
   const [users, setUsers] = useState<User[]>([])
+  const [roles, setRoles] = useState<Role[]>([])
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
@@ -15,10 +18,11 @@ export function UserList() {
     setLoading(true)
     setErrorMsg('')
     try {
-      const data = await userService.getAll()
-      setUsers(data)
+      const [userData, roleData] = await Promise.all([userService.getAll(), roleService.getAll()])
+      setUsers(userData)
+      setRoles(roleData)
     } catch {
-      setErrorMsg('Failed to load users. Please ensure mock API is running on port 3000.')
+      setErrorMsg('Failed to load users or roles. Please ensure mock API is running on port 3000.')
     } finally {
       setLoading(false)
     }
@@ -75,7 +79,13 @@ export function UserList() {
 
   return (
     <section className="grid">
-      <UserForm editingUser={editingUser} onSave={onSave} onCancel={onCancelEdit} disabled={loading} />
+      <UserForm
+        editingUser={editingUser}
+        roles={roles.map((role) => role.name)}
+        onSave={onSave}
+        onCancel={onCancelEdit}
+        disabled={loading}
+      />
 
       <div className="card">
         <div className="row between">

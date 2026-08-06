@@ -18,5 +18,27 @@
       "email": "trunghs@fpt.com",
       "role": "Admin"
     }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "Admin"
+    },
+    {
+      "id": 2,
+      "name": "User"
+    },
+    {
+      "id": 3,
+      "name": "Guest"
+    },
+    {
+      "id": 4,
+      "name": "Anonymous"
+    },
+    {
+      "id": 5,
+      "name": "Support"
+    }
   ]
 }

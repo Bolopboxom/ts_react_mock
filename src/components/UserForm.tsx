@@ -3,6 +3,7 @@ import type { User } from '../models/user'
 
 type UserFormProps = {
   editingUser: User | null
+  roles: string[]
   onSave: (payload: User) => void
   onCancel: () => void
   disabled?: boolean
@@ -24,7 +25,7 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-export function UserForm({ editingUser, onSave, onCancel, disabled }: UserFormProps) {
+export function UserForm({ editingUser, roles, onSave, onCancel, disabled }: UserFormProps) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM)
   const [touched, setTouched] = useState<Record<keyof FormState, boolean>>({
     name: false,
@@ -40,10 +41,16 @@ export function UserForm({ editingUser, onSave, onCancel, disabled }: UserFormPr
         role: editingUser.role,
       })
     } else {
-      setForm(EMPTY_FORM)
+      setForm({ ...EMPTY_FORM, role: roles[0] ?? '' })
     }
     setTouched({ name: false, email: false, role: false })
-  }, [editingUser])
+  }, [editingUser, roles])
+
+  useEffect(() => {
+    if (!editingUser && roles.length > 0 && !form.role) {
+      setForm((prev) => ({ ...prev, role: roles[0] }))
+    }
+  }, [editingUser, form.role, roles])
 
   const errors = useMemo(() => {
     return {
@@ -72,6 +79,8 @@ export function UserForm({ editingUser, onSave, onCancel, disabled }: UserFormPr
     onSave(payload)
   }
 
+  const roleOptions = form.role && !roles.includes(form.role) ? [form.role, ...roles] : roles
+
   return (
     <form className="card" onSubmit={submit}>
       <h3>{editingUser?.id ? 'Edit user' : 'Create user'}</h3>
@@ -97,13 +106,20 @@ export function UserForm({ editingUser, onSave, onCancel, disabled }: UserFormPr
       {touched.email && errors.email && <small className="err">{errors.email}</small>}
 
       <label htmlFor="role">Role</label>
-      <input
+      <select
         id="role"
         value={form.role}
         onChange={(e) => updateField('role', e.target.value)}
         onBlur={() => markTouched('role')}
-        disabled={disabled}
-      />
+        disabled={disabled || roles.length === 0}
+      >
+        <option value="">Select role</option>
+        {roleOptions.map((roleName) => (
+          <option key={roleName} value={roleName}>
+            {roleName}
+          </option>
+        ))}
+      </select>
       {touched.role && errors.role && <small className="err">{errors.role}</small>}
 
       <div className="row">
