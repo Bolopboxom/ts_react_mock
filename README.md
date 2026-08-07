@@ -1,114 +1,119 @@
-# 🚀 DevBlog - React Learning Project
+# React CRUD Management Demo
 
-A blog platform built with React, TypeScript, and Vite for learning purposes.
+React + TypeScript + Vite demo app with 2 management modules:
 
-## 📋 Prerequisites
+- User Management: CRUD users.
+- Admin Management: CRUD role master data (used by user form).
 
-Before you begin, make sure you have installed:
-- **Node.js** (version 18 or higher): https://nodejs.org/
-- **npm** or **yarn** package manager
+## Features
 
-To check if Node.js is installed:
+- Two main menus with scalable menu config:
+	- User Management
+	- Admin Management
+- User CRUD:
+	- Create, read, update, delete user
+	- Role selection via dropdown from role master data
+- Role CRUD:
+	- Create, read, update, delete role
+	- Preset role suggestions: Admin, User, Guest, Anonymous
+- Data consistency rules in mock API:
+	- User create/update requires an existing role
+	- Cannot delete a role that is currently used by users
+	- Renaming a role updates related users automatically
+
+## Prerequisites
+
+- Node.js 18+
+- npm
+
+Check environment:
+
 ```bash
 node --version
 npm --version
 ```
 
-## 🛠️ Installation & Setup
-
-### Step 1: Install Dependencies
+## Installation
 
 ```bash
 npm install
 ```
 
-or if you use yarn:
+## Run Locally
+
+Run 2 terminals:
+
+1. Start mock API server
 
 ```bash
-yarn install
+npm run mock-api
 ```
 
-### Step 2: Run Development Server
+2. Start React app
 
 ```bash
 npm run dev
 ```
 
-or with yarn:
+Important port note:
 
-```bash
-yarn dev
+- Mock API runs on `http://localhost:3000`.
+- Vite dev server is configured to prefer port `3000` in [vite.config.ts](vite.config.ts), so while API is running it will auto-fallback to another port (usually `3001`).
+- Open the exact frontend URL shown in terminal.
+
+## Available Scripts
+
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Type-check and build production bundle
+- `npm run preview` - Preview production build
+- `npm run mock-api` - Start local mock REST API
+
+## API Endpoints (Mock)
+
+Base URL: `http://localhost:3000`
+
+- `GET /users`
+- `POST /users`
+- `PUT /users/:id`
+- `DELETE /users/:id`
+- `GET /roles`
+- `POST /roles`
+- `PUT /roles/:id`
+- `DELETE /roles/:id`
+
+## Current Project Structure
+
+```text
+ts_react_mock/
+|- mock-api/
+|  |- server.mjs
+|- src/
+|  |- components/
+|  |  |- RoleManagement.tsx
+|  |  |- UserForm.tsx
+|  |  |- UserList.tsx
+|  |- config/
+|  |  |- menus.ts
+|  |- models/
+|  |  |- role.ts
+|  |  |- user.ts
+|  |- services/
+|  |  |- roleService.ts
+|  |  |- userService.ts
+|  |- App.tsx
+|  |- main.tsx
+|  |- styles.css
+|- db.json
+|- package.json
+|- vite.config.ts
 ```
 
-The app will open automatically at http://localhost:3000
+## Technical Docs
 
-## 📂 Project Structure
+- CRUD technical summary: [.github/output/crud_technical_summary.md](.github/output/crud_technical_summary.md)
+- Learning roadmap: [.github/output/learning_roadmap.md](.github/output/learning_roadmap.md)
+- UI design proposal: [.github/output/ui_design_proposal.md](.github/output/ui_design_proposal.md)
 
-```
-devblog/
-├── public/              # Static files
-├── src/
-│   ├── api/            # API layer (to be added)
-│   ├── components/     # React components (to be added)
-│   ├── features/       # Feature modules (to be added)
-│   ├── hooks/          # Custom hooks (to be added)
-│   ├── pages/          # Page components (to be added)
-│   ├── types/          # TypeScript types (to be added)
-│   ├── utils/          # Utility functions (to be added)
-│   ├── App.tsx         # Main App component
-│   ├── App.css         # App styles
-│   ├── main.tsx        # Entry point
-│   └── index.css       # Global styles
-├── index.html          # HTML template
-├── package.json        # Dependencies
-├── tsconfig.json       # TypeScript config
-├── vite.config.ts      # Vite config
-└── README.md
-```
+## Notes
 
-## 🎯 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build locally
-
-## 🌟 Tech Stack
-
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Fast build tool
-- **JSONPlaceholder API** - Mock REST API
-
-## 📚 Learning Roadmap
-
-This project follows a structured learning path:
-
-1. **Week 1-2**: React Fundamentals
-2. **Week 3-4**: TypeScript & Components
-3. **Week 5-6**: API Integration & Routing
-4. **Week 7-8**: State Management
-5. **Week 9-12**: Advanced Features & Polish
-
-See `.github/output/learning_roadmap.md` for detailed curriculum.
-
-## 🎨 Design
-
-See `.github/output/ui_design_proposal.md` for UI/UX design specifications.
-
-## 📖 Documentation
-
-- [Learning Roadmap](.github/output/learning_roadmap.md)
-- [UI Design Proposal](.github/output/ui_design_proposal.md)
-- [Project Structure](.github/output/project_structure_proposal.md)
-
-## 🤝 Contributing
-
-This is a learning project. Feel free to experiment and make changes!
-
-## 📝 License
-
-This project is for educational purposes.
-
----
-
-**Happy Learning! 🎉**
+- This project currently keeps user role as role name (string). A future improvement is migrating to `roleId` for better normalization as system scales.
